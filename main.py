@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 from typing import Final
 from responses import *
+import random
 
 # load token
 load_dotenv()
@@ -36,6 +37,7 @@ async def on_ready() -> None:
     print(f'{bot.user} is running')
     await bot.change_presence(
         activity=discord.Activity(type=discord.ActivityType.competing, name="worst bot competition"))
+    await bot.tree.sync()
 
 
 # handling incoming messages
@@ -51,11 +53,14 @@ async def on_message(message: Message) -> None:
     await send_message(message, user_message)
 
 
-"""@bot.tree.command(name="testcommand", description="test command")
-async def testcommand(ctx):
+@bot.tree.command(name="kostky", description="Hodí jednoduchou kostku (6 stran).")
+async def slash_command(interaction: discord.Interaction):
+    await interaction.response.send_message("🎲  " + str(random.randint(1, 6)))
 
-    pass"""
 
+@bot.tree.command(name="avatar", description="Get user avatar")
+async def avatar(interaction: discord.Interaction, member: discord.Member):
+    await interaction.response.send_message(member.display_avatar)
 
 
 nest_asyncio.apply()
@@ -64,6 +69,7 @@ nest_asyncio.apply()
 # main entry point
 def main():
     bot.run(token=TOKEN)
+
 
 if __name__ == '__main__':
     main()
