@@ -53,18 +53,17 @@ async def on_message(message: Message) -> None:
 
 """@bot.tree.command(name="testcommand", description="test command")
 async def testcommand(ctx):
-    # Your command logic here
+
     pass"""
 
-"""@bot.event
-async def on_ready():
-    await bot.change_presence(
-        activity=discord.Activity(type=discord.ActivityType.competing, name="worst bot competition"))"""
 
 
 nest_asyncio.apply()
 
 
 # main entry point
-def main() -> None:
-    bot.run(TOKEN)
+def main():
+    bot.run(token=TOKEN)
+
+if __name__ == '__main__':
+    main()
