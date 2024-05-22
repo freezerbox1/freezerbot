@@ -5,8 +5,11 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import os
 from typing import Final
-from responses import *
 import random
+import time
+
+startTime = time.time()
+
 
 # load token
 load_dotenv()
@@ -19,17 +22,8 @@ bot = commands.Bot(command_prefix='$', description="this is a bot", intents=disc
 
 async def send_message(message: Message, user_message: str) -> None:
     if not user_message:
-        print('(Message empty because intents not enabled)')
+        print('ERROR: (Message empty because intents not enabled)')
         return
-
-    if is_private := user_message[0] == '?':
-        user_message = user_message[1:]
-
-    try:
-        response: str = get_response(user_message)
-        await message.author.send(response) if is_private else await message.channel.send(response)
-    except Exception as e:
-        print(e)
 
 
 @bot.event
@@ -58,9 +52,15 @@ async def slash_command(interaction: discord.Interaction):
     await interaction.response.send_message("🎲  " + str(random.randint(1, 6)))
 
 
-@bot.tree.command(name="avatar", description="Get user avatar")
+@bot.tree.command(name="avatar", description="returns inputter user avatar")
 async def avatar(interaction: discord.Interaction, member: discord.Member):
     await interaction.response.send_message(member.display_avatar)
+
+
+@bot.tree.command(name="uptime", description="returns how long the bot has been online.")
+async def uptime(interaction: discord.Interaction):
+    rounded_time = round(time.time() - startTime)
+    await interaction.response.send_message("Freezerbot has been up for `" + str(rounded_time) + "` seconds.")
 
 
 nest_asyncio.apply()
