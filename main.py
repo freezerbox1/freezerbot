@@ -60,7 +60,7 @@ async def avatar(interaction: discord.Interaction, member: discord.Member):
 @bot.tree.command(name="uptime", description="returns how long the bot has been online.")
 async def uptime(interaction: discord.Interaction):
     rounded_time = round(time.time() - startTime)
-    await interaction.response.send_message("Freezerbot has been up for `" + str(rounded_time) + "` seconds.")
+    await interaction.response.send_message("Freezerbot has been up for `" + str(round(rounded_time / 60 / 60 / 24)) + " days` / `"  + str(round(rounded_time / 60 / 60)) + " hours.`")
 
 
 nest_asyncio.apply()
